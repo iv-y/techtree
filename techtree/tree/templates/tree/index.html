@@ -1,0 +1,24 @@
+{% extends 'tree/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div id="app">
+    [[ message ]]
+    <ol>
+        <li v-for="str in testdata">
+            [[ str ]]
+        </li>
+    </ol>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        data: {
+            message: 'Vue.js test',
+            testdata: {{ testdata | safe }},
+        }
+    })
+</script>
+{% endblock %}
