@@ -31,7 +31,7 @@ class Course(models.Model):
     
     @property
     def academic_year(self):
-        return self.course_number % 100
+        return self.course_number // 100
     
     @property
     def course_code(self):
@@ -40,13 +40,15 @@ class Course(models.Model):
 class Alias(models.Model):
     full_name = models.CharField(max_length=50)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    liked_users = models.ManyToManyField(User)
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name="written_aliases")
+    liked_users = models.ManyToManyField(User, related_name="liked_aliases")
     
     def __str__(self):
         return "별칭: %s %s"%(self.full_name, self.course.course_code)
     
 class PrerequisiteData(models.Model):
-    parent_course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="prerequisite_data_as_parent")
-    child_course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="prerequisite_data_as_child")
-    liked_users = models.ManyToManyField(User)
+    parent_course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="prerequisite_dataset_as_parent")
+    child_course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="prerequisite_dataset_as_child")
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name="written_prerequisites")
+    liked_users = models.ManyToManyField(User, related_name="liked_prerequisites")
     
