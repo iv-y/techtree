@@ -27,7 +27,7 @@ class Course(models.Model):
     prerequisites = models.ManyToManyField("self", symmetrical=False, through="PrerequisiteData")
     
     def __str__(self):
-        return "과목: %s%d %s"%(self.department.alphabet_short_name, self.course_number, self.full_name)
+        return "과목: %s %s"%(self.course_code, self.full_name)
     
     @property
     def academic_year(self):
