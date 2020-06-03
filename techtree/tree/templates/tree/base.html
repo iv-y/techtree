@@ -1,10 +1,37 @@
+{% load static %}
+
 <html>
     <head>
         <title>techtree: KAIST course techtree</title>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.5/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.5/semantic.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="{% static 'tree/css/base.css' %}">
     </head>
     <body>
-        <div id="content-wrapper">
+        <nav class="ui menu fixed inverted">
+            <div class="ui container">
+                <a class="header item" href="/">
+                    <h2 class="header">Techtree</h2>
+                </a>
+                <a class="item" href="/dict">
+                    <h4 class="header">과목사전</h4>
+                </a>
+                {% if not user_authenticated %}
+                    <a class="item right" href="/login">
+                        <h4 class="header">Login</h4>
+                    </a>
+                {% else %}
+                    <a class="item right" href="/logout">
+                        <h4 class="header">Logout</h4>
+                    </a>
+                {% endif %}
+            </div>
+        </nav>
+        <div id="base-content-wrapper">
             {% block content %}
             
             {% endblock %}

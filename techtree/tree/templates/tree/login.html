@@ -1,0 +1,28 @@
+{% extends 'tree/base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="app">
+    <div class="ui main text container" style="padding-top: 7rem;">
+        <h1 class="ui header">
+            Login to techtree
+        </h1>
+        <p>
+            Login test
+        </p>
+    </div>
+</div>
+<!--
+<link rel="stylesheet" type="text/css" href="{% static 'tree/login.css' %}">
+-->
+<script type="text/javascript">
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        data: {
+            message: 'Vue.js test',
+        }
+    });
+</script>
+
+{% endblock %}
