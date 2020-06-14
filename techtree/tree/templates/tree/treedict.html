@@ -3,27 +3,81 @@
 
 {% block content %}
 <div id="app">
-    <div id="treedict-wrapper" class="ui main text container inverted center-wrapper">
-        In development
+    <div id="treedict-wrapper" class="ui inverted">
+        <div id="treedict-sidebar" class="ui left vertical inverted labeled icon sidebar visible menu">
+            <span v-for="depart in departments" class="item treedict-sidebar-item">
+                <a v-bind:href="'{% url 'tree_dict' %}'+depart.alpha_code+''"
+                   v-bind:title="''+depart.full_name+''">
+                    [[ depart.alpha_code ]] [[ depart.short_name ]]
+                </a>
+            </span>
+        </div>
+
+        <div id="treedict-pusher" class="pusher">
+            <div v-if="selected_department">
+                <h2 class="header">
+                    [[ selected_department.alpha_code ]] [[ selected_department.full_name ]]
+                </h2>
+                <p v-for="course in selected_department.course_set">
+                    [[ course.course_code ]] [[ course.full_name ]] 
+                </p>
+            </div>
+            <div v-else>
+                <h2 class="header">TechTree System</h2>
+                <p>
+                    테크트리(Techtree)는 KAIST에서 수강할 수 있는 다양한 과목들의 별칭과 선수과목 정보를 정리한 사이트입니다.
+                </p>
+            </div>
+        </div>
+            
     </div>
 </div>
 
-<link rel="stylesheet" type="text/css" href="{% static 'tree/css/index.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'tree/css/treedict.css' %}">
 
 <script type="text/javascript">
     var app = new Vue({
         delimiters: ['[[', ']]'],
         el: '#app',
         data: {
-            message: 'Vue.js test',
-            testdata: {{ testdata | safe }},
+            departments: {{ departments | safe }},
+            selected_department : {{ selected_department | safe }},
         }
     });
 </script>
 
-<!--
-<script type="text/javascript" src="{% static 'tree/js/bouncing.js' %}"></script>
+<script type="text/javascript" src="{% static 'tree/js/treedict.js' %}"></script>
+
+<!-- 
+tree_maker
+origin source from https://www.cssscript.com/family-organization-tree-json-maker/
+
+MIT License
+
+Copyright (c) 2019 Remi-Leclercq-Blondel
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 -->
+<script type="text/javascript" src="{% static 'tree/js/tree_maker-min.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'tree/css/tree_maker-min.css' %}">
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.5/components/search.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.5/components/search.min.css">

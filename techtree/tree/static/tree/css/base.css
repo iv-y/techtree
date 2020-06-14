@@ -1,10 +1,15 @@
 body {
     background-size: cover;
-    margin: 0rem;
+    margin: 3.2rem 0 0 0;
 }
 
 a {
     color: whitesmoke;
+}
+
+nav {
+    height: 3.2rem;
+    width: 100%;
 }
 
 .center-wrapper {

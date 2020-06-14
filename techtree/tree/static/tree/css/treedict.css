@@ -1,0 +1,12 @@
+body {
+    background-image: None;
+    background-color: #fff !important;
+}
+
+.treedict-sidebar-item {
+    text-align: right !important;
+}
+
+#treedict-pusher {
+    padding-top: 2rem;
+}

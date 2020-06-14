@@ -30,17 +30,6 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'tree/css/index.css' %}">
 
-<script type="text/javascript">
-    var app = new Vue({
-        delimiters: ['[[', ']]'],
-        el: '#app',
-        data: {
-            message: 'Vue.js test',
-            testdata: {{ testdata | safe }},
-        }
-    });
-</script>
-
 <!--
 <script type="text/javascript" src="{% static 'tree/js/bouncing.js' %}"></script>
 -->

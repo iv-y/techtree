@@ -8,4 +8,5 @@ urlpatterns = [
     path('accounts/login/done', signupviews.RegisteredView.as_view(), name="create_user_done"),
     path('', views.index, name='tree_index'),
     path('dict/', views.treedict, name="tree_dict"),
+    path('dict/<str:department_code>/', views.treedict, name="tree_dict_code"),
 ]
