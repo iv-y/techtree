@@ -27,15 +27,21 @@
                 <a class="item" href="{% url 'tree_dict' %}">
                     <h4 class="header">과목사전</h4>
                 </a>
-                {% if not user_authenticated %}
-                    <a class="item right" href="{% url 'login' %}">
-                        <h4 class="header">Login</h4>
-                    </a>
-                {% else %}
-                    <a class="item right" href="{% url 'logout' %}">
-                        <h4 class="header">Logout</h4>
-                    </a>
-                {% endif %}
+                <div class="menu right">
+                    {% if not request.user.is_authenticated %}
+                        <a class="item" href="{% url 'signup' %}">
+                            <h4 class="header">회원가입</h4>
+                        </a>
+                        <a class="item" href="{% url 'login' %}">
+                            <h4 class="header">로그인</h4>
+                        </a>
+                    {% else %}
+                        <a class="item" href="{% url 'logout' %}">
+                            <h4 class="header">로그아웃</h4>
+                        </a>
+                    {% endif %}
+                </div>
+
             </div>
         </nav>
         <div id="base-content-wrapper">

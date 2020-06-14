@@ -3,6 +3,10 @@ body {
     margin: 0rem;
 }
 
+a {
+    color: whitesmoke;
+}
+
 .center-wrapper {
     color: white;
     font-weight: bold;

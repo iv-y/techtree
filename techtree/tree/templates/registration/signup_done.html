@@ -1,0 +1,18 @@
+{% extends 'tree/base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="app">
+    <div id="login-wrapper" class="ui main text container inverted center-wrapper">     
+        <h2 class="header">
+            회원가입이 완료되었습니다.
+        </h2>
+        <br>
+        <p><a href="{% url 'login' %}">로그인하기</a>
+        
+    </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="{% static 'tree/css/signup_done.css' %}">
+
+{% endblock %}

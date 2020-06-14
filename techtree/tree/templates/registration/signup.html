@@ -1,0 +1,22 @@
+{% extends 'tree/base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="app">
+    <div id="login-wrapper" class="ui main text container inverted center-wrapper">     
+
+        <form id="signup-form" method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            
+            {{ form.as_p }}
+            <button type="submit">
+                회원가입
+            </button>
+        </form>
+        
+    </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="{% static 'tree/css/signup.css' %}">
+
+{% endblock %}

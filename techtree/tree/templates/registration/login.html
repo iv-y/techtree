@@ -10,10 +10,9 @@
 
         {% if next %}
             {% if user.is_authenticated %}
-                <p>Your account doesn't have access to this page. To proceed,
-                please login with an account that has access.</p>
+                <p>접근 권한이 없습니다. <a href="{% url 'tree_index' %}">돌아가기</a></p>
             {% else %}
-                <p>Please login to see this page.</p>
+                <p>접근 권한이 없습니다. <a href="{% url 'login' %}">로그인</a></p>
             {% endif %}
         {% endif %}
 
@@ -30,7 +29,8 @@
         </form>
 
         {# Assumes you setup the password_reset view in your URLconf #}
-        <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        <p><a href="{% url 'password_reset' %}">비밀번호를 잊으셨나요?</a></p>
+        <p><a href="{% url 'signup' %}">회원가입</a></p>
         
     </div>
 </div>
