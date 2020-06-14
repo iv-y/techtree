@@ -1,0 +1,31 @@
+{% extends 'tree/base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="app">
+    <div id="treedict-wrapper" class="ui main text container inverted center-wrapper">
+        In development
+    </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="{% static 'tree/css/index.css' %}">
+
+<script type="text/javascript">
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        data: {
+            message: 'Vue.js test',
+            testdata: {{ testdata | safe }},
+        }
+    });
+</script>
+
+<!--
+<script type="text/javascript" src="{% static 'tree/js/bouncing.js' %}"></script>
+-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.5/components/search.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.5/components/search.min.css">
+
+{% endblock %}

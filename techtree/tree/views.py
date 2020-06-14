@@ -6,5 +6,9 @@ def index(request):
         'user_authenticated': request.user.is_authenticated,
     })
 
-def login(request):
-    return render(request, 'tree/login.html', {})
+def treedict(request):
+    
+    
+    return render(request, 'tree/treedict.html', {
+        
+    })

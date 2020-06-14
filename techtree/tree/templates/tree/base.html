@@ -10,22 +10,29 @@
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.5/semantic.min.css">
         
         <link rel="stylesheet" type="text/css" href="{% static 'tree/css/base.css' %}">
+        
+        <!-- image source: https://www.uhdpaper.com/2019/07/night-moon-forest-scenery-digital-art.html -->
+        <style>
+            body {
+                background-image: url("{% static 'tree/img/bg_1.jpg' %}");
+            }
+        </style>
     </head>
     <body>
         <nav class="ui menu fixed inverted">
             <div class="ui container">
-                <a class="header item" href="/">
+                <a class="header item" href="{% url 'tree_index' %}">
                     <h2 class="header">Techtree</h2>
                 </a>
-                <a class="item" href="/dict">
+                <a class="item" href="{% url 'tree_dict' %}">
                     <h4 class="header">과목사전</h4>
                 </a>
                 {% if not user_authenticated %}
-                    <a class="item right" href="/login">
+                    <a class="item right" href="{% url 'login' %}">
                         <h4 class="header">Login</h4>
                     </a>
                 {% else %}
-                    <a class="item right" href="/logout">
+                    <a class="item right" href="{% url 'logout' %}">
                         <h4 class="header">Logout</h4>
                     </a>
                 {% endif %}

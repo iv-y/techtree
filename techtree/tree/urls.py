@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='tree_index'),
-    path('login', views.login, name='tree_login')
+    path('dict/', views.treedict, name="tree_dict"),
 ]
