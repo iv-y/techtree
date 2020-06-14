@@ -15,12 +15,14 @@
 
         <div id="treedict-pusher" class="pusher">
             <div v-if="selected_department">
-                <h2 class="header">
-                    [[ selected_department.alpha_code ]] [[ selected_department.full_name ]]
-                </h2>
-                <p v-for="course in selected_department.course_set">
-                    [[ course.course_code ]] [[ course.full_name ]] 
-                </p>
+                <div id="mytree-wrapper" class="ui container">
+                    <h2 class="header">
+                        [[ selected_department.alpha_code ]] [[ selected_department.full_name ]]
+                    </h2>
+                    <div id='mytree'>
+                        
+                    </div>
+                </div>
             </div>
             <div v-else>
                 <h2 class="header">TechTree System</h2>
@@ -41,12 +43,16 @@
         el: '#app',
         data: {
             departments: {{ departments | safe }},
-            selected_department : {{ selected_department | safe }},
+            selected_department: {{ selected_department | safe }},
         }
     });
+    
+    var js_data = {
+        tree_structure: {{ tree_structure | safe }},
+        tree_param: {{ tree_param | safe }},
+        course_dataset: {{ course_dataset | safe }},
+    };
 </script>
-
-<script type="text/javascript" src="{% static 'tree/js/treedict.js' %}"></script>
 
 <!-- 
 tree_maker
@@ -77,6 +83,9 @@ SOFTWARE.
 -->
 <script type="text/javascript" src="{% static 'tree/js/tree_maker-min.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'tree/css/tree_maker-min.css' %}">
+
+
+<script type="text/javascript" src="{% static 'tree/js/treedict.js' %}"></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.5/components/search.min.js"></script>

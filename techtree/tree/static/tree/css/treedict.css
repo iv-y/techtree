@@ -10,3 +10,7 @@ body {
 #treedict-pusher {
     padding-top: 2rem;
 }
+
+#mytree-wrapper {
+    margin-left: 0 !important;
+}
