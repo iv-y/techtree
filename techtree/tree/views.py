@@ -43,7 +43,7 @@ def treedict(request, department_code=None):
             'description': x.description,
             'course_code': str(x.course_code),
             'best_aliases': [
-                {'full_name': al.full_name} for al in x.alias_set.annotate(num_likes=Count('liked_users')).order_by('-num_likes')[:3]
+                [al.full_name, al.num_likes] for al in x.alias_set.annotate(num_likes=Count('liked_users')).order_by('-num_likes')[:3]
             ],
             'best_prerequisites': [
                 {'parent_code': pr_data.parent_course.course_code} for pr_data in x.prerequisite_dataset_as_child.annotate(num_likes=Count('liked_users')).order_by('-num_likes')[:3]
@@ -108,7 +108,14 @@ def treedict(request, department_code=None):
         
         tree_param = {tree_root_id: {'trad':str(selected_department['full_name'])}}
         for course in courses:
-            _trad = "".join([course['course_code'], "<br>", course['full_name']])
+            _trad = "".join([course['course_code'], "<br>", course['full_name'], f'''
+                <br>
+                { "".join(map( (lambda x: '"%s", '%str(x[0])) ,course['best_aliases']))[0:-2] if course['best_aliases'] else "별칭 미등록" }
+                <br>
+                <span id="card_{course['course_code']}_inner" class="card_inner" style="display:none;">
+                    Test
+                </span>
+            '''])
             tree_param[course['course_code']] = dict(trad = _trad)
         
         render_dict['tree_param'] = json.dumps(tree_param)
