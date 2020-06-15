@@ -1,3 +1,27 @@
+let on_alias_like = function(a_id){
+    t = $("#alias_num_"+a_id.toString()).text();
+    $("#alias_num_"+a_id.toString()).text(parseInt(t)+1);
+    $.get('/a/l/'+a_id.toString());
+};
+
+let on_alias_create = function(c_code){
+    name = $('#alias_create_input_'+c_code).val();
+    alert(name);
+    $.get('/a/c/'+c_code+'/'+name);
+};
+
+let on_prereq_like = function(a_id){
+    t = $("#prereq_num_"+a_id.toString()).text();
+    $("#prereq_num_"+a_id.toString()).text(parseInt(t)+1);
+    $.get('/p/l/'+a_id.toString());
+};
+
+let on_prereq_create = function(c_code){
+    name = $('#prereq_create_input_'+c_code).val();
+    alert(name);
+    $.get('/p/c/'+name +'/'+c_code);
+};
+
 $(document).ready(function(){
     
     $('#treedict-sidebar')
@@ -32,24 +56,85 @@ $(document).ready(function(){
             }
         });
         
-        alias_table += ``;
+
         
         if(the_course){
+            alias_table += `
+                <p>
+                    ${the_course.description}
+                </p>
+                <div class="ui horizontal list">
+            `;
+    
             $.each(the_course.best_aliases, function(index, item){
-                li.push([item[4], item[3]])
+                //li.push([item[4], item[3]])
                 alias_table += `
                     <div class="item">
-                        <a id="alias_header_${item[4]}" class="header">${item[0]} ++${item[1]} </a>
-                        <div class="description">
-                            made by ${item[2]}
-                            <div id="alias_${item[4]}" class="ui toggle checkbox">
-                                <input type="checkbox" name="${item[4]}"></input>
-                                <label>Like</label>
+                        <div>
+                            <div id="alias_${item[4]}" class="ui labeled button">
+                                <div class="ui button" onclick="on_alias_like(${item[4]})">
+                                    <i class="tags icon"></i> ${item[0]} Like
+                                </div>
+                                <a id="alias_num_${item[4]}" class="ui basic left pointing label">
+                                    ${item[1]}
+                                </a>
                             </div>
                         </div>
                     </div>
                 `;
             });
+            
+            alias_table += `
+                <div class="item">
+                <div class="ui right labeled left icon input">
+                    <i class="tags icon"></i>
+                    <input id="alias_create_input_${item_code}" type="text" placeholder="Enter new alias..." ></input>
+                    
+                    <a class="ui tag label" onclick="on_alias_create('${item_code}')">
+                        Add alias
+                    </a>
+                    
+                    </div>
+    </div>
+    <hr></hr>
+    
+    `;
+            $.each(the_course.best_prerequisites, function(index, item){
+                //li.push([item[4], item[3]])
+                alias_table += `
+                    <div class="item">
+                        <div>
+                            <div id="prereq_${item[4]}" class="ui labeled button">
+                                <div class="ui button" onclick="on_prereq_like(${item[4]})">
+                                    <i class="tags icon"></i> ${item[0]} Like
+                                </div>
+                                <a id="prereq_num_${item[4]}" class="ui basic left pointing label">
+                                    ${item[1]}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            alias_table += `
+                <div class="item">
+                <div class="ui right labeled left icon input">
+                    <i class="tags icon"></i>
+                    <input id="prereq_create_input_${item_code}" type="text" placeholder="Enter new prerequisite..."></input>
+                    
+                    <a class="ui tag label" onclick="on_prereq_create('${item_code}')">
+                        Add prerequisite
+                    </a>
+                    
+                    </div>
+    </div>
+    <hr></hr>
+    
+    `;
+    
+        } else {
+            alias_table += $(item).text()+' <div>';
         }
         
         
@@ -60,37 +145,21 @@ $(document).ready(function(){
                     ${item_code}
                 </div>
                 <div class="scrolling content">
-                    <div class="ui relaxed divided list">
+
                         ${alias_table}
                     </div>
                 </div>
             </div>`
         );
         
-        $.each(li, function(index, item){
-            if(item[1]){
-                $('#alias_'+item[0].toString()).checkbox('check');
-            }
-            $('#alias_'+item[0].toString()).checkbox({
-                onChecked: function() {
-                    $.get('/alias/toggle/'+item_code+"/"+item[0]+'/0').done(function(jqXHR){
-                        window.location.href = window.location.href;
-                    }).fail(function(jqXHR){
-                        alert('로그인이 필요합니다!');
-                        $('#alias_'+item[0].toString()).checkbox("set unchecked");
-                    });
-                },
-                onUnchecked: function() {
-                    $.get('/alias/toggle/'+item_code+"/"+item[0]+'/1');
-                }
-            });
-        });
+
         
         $(item).click(function(){
             $("#treedict_modal_"+item_code).modal('show');
             redraw_svg();
         });
     });
+
     
 });
 

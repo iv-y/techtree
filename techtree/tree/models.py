@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -40,11 +39,10 @@ class Course(models.Model):
 class Alias(models.Model):
     full_name = models.CharField(max_length=50)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name="written_aliases")
-    liked_users = models.ManyToManyField(User, related_name="liked_aliases", blank=True)
+    num_likes = models.PositiveSmallIntegerField();
     
     def __str__(self):
-        return "별칭: %s %s ++%d"%(self.full_name, self.course.course_code, self.liked_users.count())
+        return "별칭: %s %s ++%d"%(self.full_name, self.course.course_code, self.num_likes)
     
     class Meta:
         verbose_name_plural="Aliases"
@@ -55,11 +53,10 @@ class Alias(models.Model):
 class PrerequisiteData(models.Model):
     parent_course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="prerequisite_dataset_as_parent")
     child_course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="prerequisite_dataset_as_child")
-    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name="written_prerequisites")
-    liked_users = models.ManyToManyField(User, related_name="liked_prerequisites", blank=True)
+    num_likes = models.PositiveSmallIntegerField();
     
     def __str__(self):
-        return "선수과목 데이터: %s >>> %s ++%d"%(self.parent_course.course_code, self.child_course.course_code, self.liked_users.count())
+        return "선수과목 데이터: %s >>> %s ++%d"%(self.parent_course.course_code, self.child_course.course_code, self.num_likes)
     
     class Meta:
         verbose_name_plural="Prerequisite Dataset"

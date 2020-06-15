@@ -14,61 +14,30 @@ from .models import *
 def index(request):
     return render(request, 'tree/index.html', {})
 
-def treedict_alias_toggle(request, c_code, a_id, uncheck):
-    
-    if not request.user.is_authenticated:
-        raise PermissionDenied
-    
-    course = get_object_or_404(Course, course_code=c_code)
-    try:
-        selected_alias = course.alias_set.get(pk=a_id)
-    except (KeyError, Alias.DoesNotExist):
-        raise Http404('There is no such alias.')
-    else:
-        if uncheck:
-            selected_alias.liked_users.filter(id=request.user.id).delete()
-        else:
-            selected_alias.liked_users.add(request.user)
-        selected_alias.save()
-        return HttpResponse("");
-
 def treedict_alias_create(request, c_code, a_full_name):
-    if not request.user.is_authenticated:
-        raise PermissionDenied
     course = get_object_or_404(Course, course_code=c_code)
-    Alias.objects.create(full_name=a_full_name, course=course, author=request.user)
+    Alias.objects.create(full_name=a_full_name, course=course, num_likes=0)
+    return HttpResponse('')
+
+def treedict_alias_like(request, a_id):
+    a = Alias.objects.get(pk=a_id)
+    a.num_likes += 1
+    a.save()
+    return HttpResponse('')
 
     
-@login_required
-def treedict_prerequisite_toggle(request, c_code):
-    course = get_object_or_404(Course, course_code=c_code)
-    try:
-        selected_alias = course.alias_set.get(pk=request.POST['id'])
-    except (KeyError, Alias.DoesNotExist):
-        raise Http404('There is no such alias.')
-    else:
-        if request.POST['unchecked']:
-            selected_alias.liked_users.filter(id=request.user.id).delete()
-        else:
-            selected_alias.liked_users.add(request.user)
-        selected_alias.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('tree_dict', args=(course.department.alphabet_short_name,)))
+def treedict_prerequisite_create(request, c_p_code, c_c_code):
+    p = get_object_or_404(Course, course_code=c_p_code)
+    c = get_object_or_404(Course, course_code=c_c_code)
+    
+    PrerequisiteData.objects.create(parent_course=p, child_course=c, num_likes=0)
 
-@login_required
-def treedict_prerequisite_create(request, c_code):
-    course = get_object_or_404(Course, course_code=c_code)
-    Alias.objects.create(full_name=request.POST['full_name'], course=course, author=request.user)
-    
-    
-    
-    
-    
-    
-    
+def treedict_prerequisite_like(request, p_id):
+    a = PrerequisiteData.objects.get(pk=p_id)
+    a.num_likes += 1
+    a.save()
 
+    
 def treedict(request, department_code=None):
     
     departments = list(map((lambda x: {
@@ -105,27 +74,19 @@ def treedict(request, department_code=None):
                 [
                     al.full_name, 
                     al.num_likes,
-                    al.author.username if al.author.username else "(Unknown)",
-                    1 if al.liked_users.filter(id=request.user.id).exists() else 0,
+                    "(Unknown)",
+                    0,
                     al.id,
-                ] for al in x.alias_set.annotate(num_likes=Count('liked_users')).order_by('-num_likes')[:]
+                ] for al in x.alias_set.order_by('-num_likes')[:]
             ],
             'best_prerequisites': [
                 [
                     pr_data.parent_course.course_code,
                     pr_data.num_likes,
-                    pr_data.author.username if pr_data.author.username else "(Unknown)",
-                    1 if pr_data.liked_users.filter(id=request.user.id).exists() else 0,
+                    "(Unknown)",
+                    0,
                     pr_data.id,
-                ] for pr_data in x.prerequisite_dataset_as_child.annotate(num_likes=Count('liked_users')).order_by('-num_likes')[:]
-            ],
-            'best_children': [
-                [
-                    pr_data.parent_course.course_code,
-                    pr_data.num_likes,
-                    pr_data.author.username if pr_data.author.username else "(Unknown)",
-                    1 if pr_data.liked_users.filter(id=request.user.id).exists() else 0,
-                ] for pr_data in x.prerequisite_dataset_as_parent.annotate(num_likes=Count('liked_users')).order_by('-num_likes')[:]
+                ] for pr_data in x.prerequisite_dataset_as_child.order_by('-num_likes')[:]
             ],
         }), selected_department_obj.course_set.all()))
         
