@@ -20,15 +20,21 @@ $(document).ready(function(){
     }
     
     $('.tree__container__step__card p').each( function(index, item) {
+        const item_code = item.id.toString().split("_")[1];
+        $(item).append(
+            '<div id="treedict_modal_' + item_code + '" class="ui modal">' +
+                '<i class="close icon"></i>' +
+                '<div class="header">' +
+                    item_code +
+                '</div>' +
+                '<div class="scrolling content">' +
+                    '<p>Data about aliases and prerequisites</p>' +
+                '</div>' +
+            '</div>'
+        );
+        
         $(item).click(function(){
-            $(item).addClass('clicked_card');
-            var innercard = $("#"+ item.id + " > .card_inner");
-            if( innercard.css('display') == 'none' ){
-                innercard.css('display', '');
-            } else {
-                innercard.css('display', 'none');
-            }
-            
+            $("#treedict_modal_"+item_code).modal('show');
             redraw_svg();
         });
     });

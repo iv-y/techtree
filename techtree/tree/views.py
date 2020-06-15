@@ -111,10 +111,6 @@ def treedict(request, department_code=None):
             _trad = "".join([course['course_code'], "<br>", course['full_name'], f'''
                 <br>
                 { "".join(map( (lambda x: '"%s", '%str(x[0])) ,course['best_aliases']))[0:-2] if course['best_aliases'] else "별칭 미등록" }
-                <br>
-                <span id="card_{course['course_code']}_inner" class="card_inner" style="display:none;">
-                    Test
-                </span>
             '''])
             tree_param[course['course_code']] = dict(trad = _trad)
         
